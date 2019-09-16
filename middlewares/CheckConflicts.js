@@ -4,7 +4,7 @@ class CheckConflicts {
 
   static existingLocation(req, res, next) {
     const { areaCode } = req.body;
-    const formatedAreaCode = areaCode.trim();
+    const formatedAreaCode = areaCode.trim().toLowerCase();
     connect.query(
       `SELECT id, name FROM locations WHERE areacode= '${formatedAreaCode}'`,
       (err, response) => {
@@ -22,10 +22,19 @@ class CheckConflicts {
   }
 
   static checkParentId(req, res, next) {
-    const { parentId } = req.body
-    if (parentId) {
+    let parentid;
+
+    if(req.body.parentid) {
+      parentid = req.body.parentid;
+    }
+    else if (req.params.pid) {
+      parentid = req.params.pid;
+    }
+    
+    if (parentid) {
+      const formatedParentId = parentid.trim().toLowerCase();
       connect.query(
-        `SELECT id FROM locations WHERE parentlocationid= '${parentId}'`,
+        `SELECT id FROM locations WHERE areacode = '${formatedParentId}'`,
         (err, response) => {
           const result = JSON.parse(JSON.stringify(response.rows));
           if (result.length < 1) {

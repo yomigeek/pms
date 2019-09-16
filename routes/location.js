@@ -18,4 +18,10 @@ locationRouter.get(
   LocationController.getAll
 );
 
+locationRouter.get(
+  '/:pid',
+  CheckConflicts.checkParentId,
+  LocationController.getById
+);
+
 export default locationRouter;
