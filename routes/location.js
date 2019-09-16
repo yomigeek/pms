@@ -24,4 +24,12 @@ locationRouter.get(
   LocationController.getById
 );
 
+locationRouter.put(
+  '/:aid',
+  LocationValidation.addLocation,
+  CheckConflicts.checkAreaCode,
+  CheckConflicts.checkParentId,
+  LocationController.update
+);
+
 export default locationRouter;
