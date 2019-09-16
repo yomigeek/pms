@@ -6,23 +6,24 @@ dotenv.config();
 class LocationController {
   static addLocation(req, res) {
     let pId;
-    const { name, female, male, areaCode } = req.body;
+    const { name, female, male, areaCode, parentid } = req.body;
     const formattedName = name.trim().toLowerCase();
     const randomId = Math.floor(Math.random() * 100000000000);
     const locationId = randomId + Date.now();
     const total = parseInt(male) + parseInt(female);
+    const formattedAreaCode = areaCode.trim().toLowerCase();
 
-    if (req.body.parentId == undefined) {
+    if (parentid == undefined) {
       pId = 'None';
     }
     else {
-      pId = req.body.parentId;
+      pId = parentid.trim().toLowerCase();
     }
 
 
     connect.query(
       `${"insert into locations (name, female, male, locationid, parentid, areacode, total) " +
-      "values ('"}${formattedName}', '${female}' , '${male}','${locationId}','${pId}', '${areaCode}', '${total}')`,
+      "values ('"}${formattedName}', '${female}' , '${male}','${locationId}','${pId}', '${formattedAreaCode}', '${total}')`,
       (err, response) => {
         if (err) {
           throw err.message;
@@ -55,6 +56,32 @@ class LocationController {
             status: "not found",
             statusCode: 404,
             message: "No location exist!",
+          });
+        }
+      }
+    );
+  }
+
+  static getById(req, res) {
+    const { pid } = req.params;
+    connect.query(
+      `SELECT name, male, female, total, areacode FROM locations
+        WHERE parentid = '${pid.trim().toLowerCase()}'
+        `,
+      (err, response) => {
+        const result = JSON.parse(JSON.stringify(response.rows));
+        if (result.length > 0) {
+          return res.status(200).json({
+            status: "success",
+            statusCode: 200,
+            subLocations: result,
+          });
+        }
+        else {
+          return res.status(404).json({
+            status: "not found",
+            statusCode: 404,
+            message: "No Sublocation exist for this location!",
           });
         }
       }
