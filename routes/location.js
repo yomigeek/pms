@@ -13,5 +13,9 @@ locationRouter.post(
   LocationController.addLocation
 );
 
+locationRouter.get(
+  '/all',
+  LocationController.getAll
+);
 
 export default locationRouter;
