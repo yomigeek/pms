@@ -32,4 +32,11 @@ locationRouter.put(
   LocationController.update
 );
 
+locationRouter.delete(
+  '/:aid',
+  CheckConflicts.checkAreaCode,
+  CheckConflicts.checkExistingSubLocations,
+  LocationController.delete
+);
+
 export default locationRouter;

@@ -284,4 +284,47 @@ describe('Location Action Tests', () => {
       });
   });
 
+  it('should return a 404 and error message on DELETE request when deleting a location with a non-existing areacode', (done) => {
+    chai.request(app)
+      .delete('/api/v1/location/AJX1019')
+      .end((err, res) => {
+        res.should.have.status(404);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('status');
+        res.body.should.have.property('statusCode');
+        res.body.should.have.property('message');
+        done();
+      });
+  });
+
+  it('should return a 400 and error message on DELETE request when deleting a location with sublocations', (done) => {
+    chai.request(app)
+      .delete('/api/v1/location/hola1101')
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('status');
+        res.body.should.have.property('statusCode');
+        res.body.should.have.property('message');
+        done();
+      });
+  });
+
+  it('should return a 200 on DELETE request when deleting a location with no sublocations', (done) => {
+    chai.request(app)
+      .delete('/api/v1/location/ajx101')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('status');
+        res.body.should.have.property('statusCode');
+        res.body.should.have.property('message');
+        done();
+      });
+  });
+
+
 });
