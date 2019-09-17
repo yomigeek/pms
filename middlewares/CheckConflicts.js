@@ -41,7 +41,7 @@ class CheckConflicts {
             return res.status(404).json({
               status: "error",
               statusCode: 404,
-              message: "Location does not exist! Kindly check the parentid"
+              message: `Location does not exist! Kindly check the parentid`
             });
           }
           next();
@@ -51,6 +51,26 @@ class CheckConflicts {
     else {
       next();
     }
+  }
+
+  static checkAreaCode(req, res, next) {
+    const { aid } = req.params;
+    
+      const formatedAreaCode = aid.trim().toLowerCase();
+      connect.query(
+        `SELECT id FROM locations WHERE areacode = '${formatedAreaCode}'`,
+        (err, response) => {
+          const result = JSON.parse(JSON.stringify(response.rows));
+          if (result.length < 1) {
+            return res.status(404).json({
+              status: "error",
+              statusCode: 404,
+              message: `Location does not exist! Kindly check the areacode`
+            });
+          }
+          next();
+        }
+      );
   }
 
 }
