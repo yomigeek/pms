@@ -128,6 +128,31 @@ class LocationController {
     );
   } 
 
+  static delete(req, res) {
+    const { aid } = req.params;
+    connect.query(
+      `DELETE FROM locations
+        WHERE areacode = '${aid.trim().toLowerCase()}'
+        `,
+      (err, response) => {
+        if (response.rowCount > 0) {
+          return res.status(200).json({
+            status: "success",
+            statusCode: 200,
+            message: `Location has been deleted successfully!`,
+          });
+        }
+        else {
+          return res.status(400).json({
+            status: "error",
+            statusCode: 400,
+            message: "Locations couldn't be deleted! Something went wrong.",
+          });
+        }
+      }
+    );
+  }
+
 
 }
 

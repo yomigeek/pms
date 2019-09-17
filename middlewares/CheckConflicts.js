@@ -73,6 +73,26 @@ class CheckConflicts {
       );
   }
 
+  static checkExistingSubLocations(req, res, next) {
+    const { aid } = req.params;
+    
+      const formatedAreaCode = aid.trim().toLowerCase();
+      connect.query(
+        `SELECT id FROM locations WHERE parentid = '${formatedAreaCode}'`,
+        (err, response) => {
+          const result = JSON.parse(JSON.stringify(response.rows));
+          if (result.length > 0) {
+            return res.status(400).json({
+              status: "error",
+              statusCode: 400,
+              message: `Location cannot be deleted! Ensure to delete existing sub locations within the location.`
+            });
+          }
+          next();
+        }
+      );
+  }
+
 }
 
 export default CheckConflicts;
