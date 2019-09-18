@@ -203,6 +203,7 @@ describe('Location Action Tests', () => {
       });
   });
 
+
   it(`should return a 404 and not found message on GET request when requesting 
   sublocations with an existing parent location but no sublocations`, (done) => {
     chai.request(app)
@@ -262,7 +263,7 @@ describe('Location Action Tests', () => {
       });
   });
 
-  it('should return a 200 and error message on PUT request when updating a location', (done) => {
+  it('should return a 200 on PUT request when updating a location', (done) => {
     chai.request(app)
       .put('/api/v1/location/AJX101')
       .send({
@@ -326,5 +327,19 @@ describe('Location Action Tests', () => {
       });
   });
 
+
+  it('should return a 200 and success message on GET request when requesting locations information', (done) => {
+    chai.request(app)
+      .get('/api/v1/location/single/hola1101')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('status');
+        res.body.should.have.property('statusCode');
+        res.body.should.have.property('location');
+        done();
+      });
+  });
 
 });

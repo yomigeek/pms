@@ -59,6 +59,34 @@ class LocationController {
     );
   }
 
+  static getSingle(req, res) {
+    const { aid } = req.params;
+
+    connect.query(
+      `SELECT name, male, female, total, areacode, parentid FROM locations
+      WHERE areacode = '${aid.trim().toLowerCase()}'
+
+      `,
+      (err, response) => {
+        const result = JSON.parse(JSON.stringify(response.rows));
+        if (result.length > 0) {
+          return res.status(200).json({
+            status: "success",
+            statusCode: 200,
+            location: result,
+          });
+        }
+        else {
+          return res.status(404).json({
+            status: "not found",
+            statusCode: 404,
+            message: "This location does not exist!",
+          });
+        }
+      }
+    );
+  }
+
   static getById(req, res) {
     const { pid } = req.params;
     connect.query(

@@ -32,6 +32,12 @@ locationRouter.put(
   LocationController.update
 );
 
+locationRouter.get(
+  '/single/:aid',
+  CheckConflicts.checkAreaCode,
+  LocationController.getSingle
+);
+
 locationRouter.delete(
   '/:aid',
   CheckConflicts.checkAreaCode,
