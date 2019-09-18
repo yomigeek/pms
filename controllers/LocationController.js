@@ -87,8 +87,6 @@ class LocationController {
     );
   }
 
-  
-
   static getById(req, res) {
     const { pid } = req.params;
     connect.query(
