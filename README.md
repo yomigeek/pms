@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/yomigeek/pms.svg?branch=develop)](https://travis-ci.org/yomigeek/pms) [![Coverage Status](https://coveralls.io/repos/github/yomigeek/pms/badge.svg?branch=develop)](https://coveralls.io/github/yomigeek/pms?branch=develop)
+
 # PMS-API
 A Population Management System
 
